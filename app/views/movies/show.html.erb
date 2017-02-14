@@ -21,7 +21,58 @@
       <dd><%= @movie.image_url %></dd>
 
       <dt>Director</dt>
-      <dd><%= Director.find(@movie.director_id).name  %></dd>
+      <dd><%= @movie.director.name  %></dd>
+
+      <dt>Number of Characters</dt>
+      <dd><%= @movie.characters.count %></dd>
+
+      <dt>List of Actors</dt>
+      <%  @movie.characters.each do |character| %>
+      <dd><%= character.actor.name%></dd>
+      <% end %>
+      Add a New Charachter
+
+      <form action="/create_character" method="post">
+        <!-- Hidden input for authenticity token to protect from forgery -->
+        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+        <!-- Label and input for movie_id -->
+        <div class="form-group">
+          <label for="movie_id" class="control-label">
+            Movie
+          </label>
+
+          <%= select_tag(:movie_id, options_from_collection_for_select(Movie.all, :id, :title, @movie.id), :class => "form-control")%>
+
+          <a href="/movie/new">Add New Movie</a>
+
+
+        <!-- Label and input for actor_id -->
+        <div class="form-group">
+          <label for="actor_id" class="control-label">
+            Actor
+          </label>
+
+          <input type="text" id="actor_id" name="actor_id" placeholder="Actor" class="form-control" >
+        </div>
+
+        <!-- Label and input for name -->
+        <div class="form-group">
+          <label for="name" class="control-label">
+            Name
+          </label>
+
+          <input type="text" id="name" name="name" placeholder="Name" class="form-control" >
+        </div>
+
+        <button class="btn btn-success">
+          Create Character
+        </button>
+        or
+        <a href="/characters">Cancel</a>
+      </form>
+
+
 
     </dl>
 
